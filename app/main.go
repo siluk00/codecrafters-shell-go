@@ -16,11 +16,19 @@ func main() {
 	for {
 		fmt.Print("$ ")
 		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
-		command = strings.TrimRight(command, "\r\n")
 		if err != nil {
 			log.Println("Error reading command")
 
 		}
+
+		command = strings.TrimRight(command, "\r\n")
+		command = strings.TrimSpace(command)
+
+		switch command {
+		case "exit":
+			exit()
+		}
+
 		notFound(command)
 		fmt.Printf("\n")
 	}
@@ -28,4 +36,8 @@ func main() {
 
 func notFound(command string) {
 	fmt.Printf("%s: command not found", command)
+}
+
+func exit() {
+	os.Exit(0)
 }
