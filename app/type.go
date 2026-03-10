@@ -16,7 +16,7 @@ func typeCommand(args []string) {
 			if path, err := exec.LookPath(arg); err != nil {
 				fmt.Printf("%s: not found\n", arg)
 			} else {
-				fmt.Printf("%s is %s", arg, path)
+				fmt.Printf("%s is %s\n", arg, path)
 			}
 		}
 	}
