@@ -2,14 +2,18 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 )
 
 // Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
 var _ = fmt.Print
+
+var builtinCommands = []string{"echo", "exit", "type"}
 
 func main() {
 	// TODO: Uncomment the code below to pass the first stage
@@ -33,13 +37,19 @@ func main() {
 		case "type":
 			typeCommand(args)
 		default:
-			notFound(command)
+			cmd := exec.Command(command, args...)
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			if err := cmd.Run(); err != nil {
+				if errors.Is(err, exec.ErrNotFound) {
+					fmt.Printf("%s: command not found\n", command)
+				} else {
+					log.Println("command failed")
+				}
+			}
+
 		}
 	}
-}
-
-func notFound(command string) {
-	fmt.Printf("%s: command not found\n", command)
 }
 
 func split(command string) (string, []string) {
