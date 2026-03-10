@@ -23,13 +23,17 @@ func main() {
 
 		command = strings.TrimRight(command, "\r\n")
 		command = strings.TrimSpace(command)
+		command, args := split(command)
 
 		switch command {
 		case "exit":
-			exit()
+			os.Exit(0)
+		case "echo":
+			echo(args)
+		default:
+			notFound(command)
 		}
 
-		notFound(command)
 		fmt.Printf("\n")
 	}
 }
@@ -38,6 +42,12 @@ func notFound(command string) {
 	fmt.Printf("%s: command not found", command)
 }
 
-func exit() {
-	os.Exit(0)
+func split(command string) (string, []string) {
+	tokens := strings.Fields(command)
+	if len(tokens) == 1 {
+		return tokens[0], []string{}
+	}
+
+	return tokens[0], tokens[1:]
+
 }
