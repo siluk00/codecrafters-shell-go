@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func echo(args []string) {
+func echoCommand(args []string) {
 	phrase := strings.Join(args, " ")
-	fmt.Printf("%s", phrase)
+	fmt.Printf("%s\n", phrase)
 }

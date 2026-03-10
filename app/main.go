@@ -29,17 +29,17 @@ func main() {
 		case "exit":
 			os.Exit(0)
 		case "echo":
-			echo(args)
+			echoCommand(args)
+		case "type":
+			typeCommand(args)
 		default:
 			notFound(command)
 		}
-
-		fmt.Printf("\n")
 	}
 }
 
 func notFound(command string) {
-	fmt.Printf("%s: command not found", command)
+	fmt.Printf("%s: command not found\n", command)
 }
 
 func split(command string) (string, []string) {
