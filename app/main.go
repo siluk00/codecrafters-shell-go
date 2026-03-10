@@ -24,5 +24,5 @@ func main() {
 }
 
 func notFound(command string) {
-	fmt.Printf("Command not found: %s\n", command)
+	fmt.Printf("%s: command not found", command)
 }
