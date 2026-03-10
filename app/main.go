@@ -13,16 +13,16 @@ var _ = fmt.Print
 
 func main() {
 	// TODO: Uncomment the code below to pass the first stage
-	for {
-		fmt.Print("$ ")
-		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
-		command = strings.TrimRight(command, "\r\n")
-		if err != nil {
-			log.Println("Error reading command")
-			continue
-		}
-		notFound(command)
+
+	fmt.Print("$ ")
+	command, err := bufio.NewReader(os.Stdin).ReadString('\n')
+	command = strings.TrimRight(command, "\r\n")
+	if err != nil {
+		log.Println("Error reading command")
+
 	}
+	notFound(command)
+
 }
 
 func notFound(command string) {
