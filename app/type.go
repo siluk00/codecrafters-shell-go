@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os/exec"
 	"slices"
 )
 
@@ -12,7 +13,11 @@ func typeCommand(args []string) {
 		if slices.Contains(builtinCommands, arg) {
 			fmt.Printf("%s is a shell builtin\n", arg)
 		} else {
-			fmt.Printf("%s: not found\n", arg)
+			if path, err := exec.LookPath(arg); err != nil {
+				fmt.Printf("%s: not found\n", arg)
+			} else {
+				fmt.Printf("%s is %s", arg, path)
+			}
 		}
 	}
 }
