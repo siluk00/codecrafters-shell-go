@@ -36,6 +36,7 @@ func (c *Cmd) cdCommand(args []string) {
 
 	if fileInfo.IsDir() {
 		c.curDir = args[0]
+		return
 		//fmt.Printf("%s\n", args[0])
 	}
 
