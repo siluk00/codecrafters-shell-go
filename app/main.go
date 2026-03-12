@@ -13,10 +13,20 @@ import (
 // Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
 var _ = fmt.Print
 
-var builtinCommands = []string{"echo", "exit", "type", "pwd"}
+var builtinCommands = []string{"echo", "exit", "type", "pwd", "cd"}
+
+type Cmd struct {
+	curDir string
+}
 
 func main() {
 	// TODO: Uncomment the code below to pass the first stage
+	curDir, err := os.Getwd()
+	if err != nil {
+		log.Fatalln("Couldn't find current directory")
+	}
+	cmd := &Cmd{curDir: curDir}
+
 	for {
 		fmt.Print("$ ")
 		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
@@ -37,7 +47,9 @@ func main() {
 		case "type":
 			typeCommand(args)
 		case "pwd":
-			pwdCommand()
+			cmd.pwdCommand()
+		case "cd":
+			cmd.cdCommand(args)
 		default:
 			cmd := exec.Command(command, args...)
 			cmd.Stdout = os.Stdout
