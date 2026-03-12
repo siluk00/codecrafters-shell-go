@@ -20,6 +20,14 @@ func (c *Cmd) cdCommand(args []string) {
 		path = args[0]
 	case '.':
 		path = filepath.Join(c.curDir, args[0])
+	case '~':
+		if args[0] == "~" {
+			var err error
+			path, err = os.UserHomeDir()
+			if err != nil {
+				return
+			}
+		}
 	default:
 		fmt.Printf("cd: %s: No such file or directory\n", args[0])
 		return
