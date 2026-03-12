@@ -7,7 +7,7 @@ import (
 
 func (c *Cmd) cdCommand(args []string) {
 	if len(args) > 1 {
-		fmt.Println("cd: too many arguments\n")
+		fmt.Println("cd: too many arguments")
 	}
 	if len(args) == 0 {
 		return
@@ -17,7 +17,7 @@ func (c *Cmd) cdCommand(args []string) {
 
 		if err != nil {
 			if os.IsNotExist(err) {
-				fmt.Printf("cd: %s: No such file or directory/n", args[0])
+				fmt.Printf("cd: %s: No such file or directory\n", args[0])
 			}
 			return
 		}
@@ -27,7 +27,7 @@ func (c *Cmd) cdCommand(args []string) {
 			//fmt.Printf("%s\n", args[0])
 		}
 	} else {
-		fmt.Printf("cd: %s: No such file or directory/n", args[0])
+		fmt.Printf("cd: %s: No such file or directory\n", args[0])
 
 	}
 }
