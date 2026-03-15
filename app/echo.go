@@ -37,7 +37,7 @@ func NormalizeQuotes(args string) (string, error) {
 				if flipped {
 					if strings.TrimSpace(content.String()) != "" {
 						content.WriteString(strings.Join(strings.Fields(outsideContent.String()), " "))
-					} else {
+					} else if content.String() != "" {
 						content.WriteRune(' ')
 					}
 					outsideContent.Reset()
@@ -46,6 +46,7 @@ func NormalizeQuotes(args string) (string, error) {
 				content.WriteRune(r)
 			} else {
 				outsideContent.WriteRune(r)
+				flipped = false
 			}
 		}
 	}
