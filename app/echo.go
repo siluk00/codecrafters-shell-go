@@ -14,12 +14,15 @@ func echoCommand(args string) {
 	fmt.Printf("%s\n", phrase)
 }
 
+// NormalizeQuotes is a function for echo to work with 'literals    ' input
 func NormalizeQuotes(args string) (string, error) {
 	content := strings.Builder{}
 	inQuote := false
 	flipped := false
 	outsideContent := strings.Builder{}
 	counter := 0
+	args = strings.TrimLeft(args, " ")
+	args = strings.TrimRight(args, " ")
 
 	for _, r := range args {
 		if r == '\'' {
@@ -35,9 +38,16 @@ func NormalizeQuotes(args string) (string, error) {
 		} else {
 			if inQuote {
 				if flipped {
-					if strings.TrimSpace(outsideContent.String()) != "" {
-						content.WriteString(strings.Join(strings.Fields(outsideContent.String()), " "))
-					} else if outsideContent.String() != "" {
+					outsideString := outsideContent.String()
+					if strings.TrimSpace(outsideString) != "" {
+						if outsideString[0] == ' ' {
+							content.WriteRune(' ')
+						}
+						content.WriteString(strings.Join(strings.Fields(outsideString), " "))
+						if outsideString[len(outsideString)-1] == ' ' {
+							content.WriteRune(' ')
+						}
+					} else if outsideString != "" {
 						content.WriteRune(' ')
 					}
 					outsideContent.Reset()
