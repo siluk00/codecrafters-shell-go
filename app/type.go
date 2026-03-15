@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"os/exec"
 	"slices"
+	"strings"
 )
 
-func typeCommand(args []string) {
+func typeCommand(commands string) {
+	args := strings.Fields(commands)
 	for _, arg := range args {
 		if slices.Contains(builtinCommands, arg) {
 			fmt.Printf("%s is a shell builtin\n", arg)

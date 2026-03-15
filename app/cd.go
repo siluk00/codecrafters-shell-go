@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
-func (c *Cmd) cdCommand(args []string) {
-	var path string
+func (c *Cmd) cdCommand(path string) {
+	args := strings.Fields(path)
+
 	if len(args) > 1 {
 		fmt.Println("cd: too many arguments")
 	}

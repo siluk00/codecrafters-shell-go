@@ -36,7 +36,7 @@ func main() {
 		}
 
 		command = strings.TrimRight(command, "\r\n")
-		command = strings.TrimSpace(command)
+		//command = strings.TrimSpace(command)
 		command, args := split(command)
 
 		switch command {
@@ -51,7 +51,7 @@ func main() {
 		case "cd":
 			cmd.cdCommand(args)
 		default:
-			cmd := exec.Command(command, args...)
+			cmd := exec.Command(command, strings.Fields(args)...)
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 			if err := cmd.Run(); err != nil {
@@ -66,12 +66,12 @@ func main() {
 	}
 }
 
-func split(command string) (string, []string) {
-	tokens := strings.Fields(command)
+func split(command string) (string, string) {
+	tokens := strings.SplitN(command, " ", 2)
 	if len(tokens) == 1 {
-		return tokens[0], []string{}
+		return tokens[0], ""
 	}
 
-	return tokens[0], tokens[1:]
+	return tokens[0], tokens[1]
 
 }
