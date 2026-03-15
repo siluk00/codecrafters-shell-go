@@ -35,7 +35,7 @@ func NormalizeQuotes(args string) (string, error) {
 		} else {
 			if inQuote {
 				if flipped {
-					if strings.TrimSpace(content.String()) != "" {
+					if strings.TrimSpace(outsideContent.String()) != "" {
 						content.WriteString(strings.Join(strings.Fields(outsideContent.String()), " "))
 					} else if content.String() != "" {
 						content.WriteRune(' ')
