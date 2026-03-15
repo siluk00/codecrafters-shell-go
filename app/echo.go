@@ -51,7 +51,7 @@ func NormalizeQuotes(args string) (string, error) {
 	}
 
 	if !inQuote {
-		content.WriteString(outsideContent.String())
+		content.WriteString(strings.Join(strings.Fields(outsideContent.String()), " "))
 	}
 
 	return content.String(), nil
