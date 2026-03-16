@@ -12,6 +12,7 @@ func TestNormalizeQuotes(t *testing.T) {
 		"'Hello' you",
 		"Hello you",
 		"'hi     ' you",
+		"'shell     hello' 'test''world' example''script",
 	}
 
 	expected := []string{
@@ -19,6 +20,7 @@ func TestNormalizeQuotes(t *testing.T) {
 		"Hello you",
 		"Hello you",
 		"hi      you",
+		"shell     hello testworld examplescript",
 	}
 
 	for i, _ := range strTest {

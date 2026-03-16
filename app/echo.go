@@ -39,12 +39,13 @@ func NormalizeQuotes(args string) (string, error) {
 			if inQuote {
 				if flipped {
 					outsideString := outsideContent.String()
+
 					if strings.TrimSpace(outsideString) != "" {
-						if outsideString[0] == ' ' {
+						if strings.HasPrefix(outsideString, " ") {
 							content.WriteRune(' ')
 						}
 						content.WriteString(strings.Join(strings.Fields(outsideString), " "))
-						if outsideString[len(outsideString)-1] == ' ' {
+						if strings.HasSuffix(outsideString, " ") {
 							content.WriteRune(' ')
 						}
 					} else if outsideString != "" {
@@ -62,7 +63,7 @@ func NormalizeQuotes(args string) (string, error) {
 	}
 
 	if counter%2 != 0 {
-		return "", errors.New("Bad argument")
+		return "", errors.New("Bad argument: unbalanced quotes")
 	}
 
 	if !inQuote {
