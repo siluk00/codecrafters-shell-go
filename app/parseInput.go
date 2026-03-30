@@ -6,8 +6,9 @@ import (
 )
 
 // NormalizeQuotes is a function for echo to work with 'literals    ' input
-func ParseQuotes(args string) (string, error) {
-	content := strings.Builder{}
+func tokenizer(args string) ([]string, error) {
+	insideContent := strings.Builder{}
+	content := []string{}
 	inQuote := false
 	outsideContent := strings.Builder{}
 	counter := 0
@@ -22,25 +23,50 @@ func ParseQuotes(args string) (string, error) {
 				inQuote = false
 			} else {
 				inQuote = true
-
 				outsideString := outsideContent.String()
-
-				if strings.TrimSpace(outsideString) != "" {
-					if strings.HasPrefix(outsideString, " ") {
-						content.WriteRune(' ')
+				insideString := insideContent.String()
+				if outsideString == "" {
+					continue
+				} else if strings.Trim(outsideString, " ") == "" {
+					if insideString != "" {
+						content = append(content, insideString)
 					}
-					content.WriteString(strings.Join(strings.Fields(outsideString), " "))
-					if strings.HasSuffix(outsideString, " ") {
-						content.WriteRune(' ')
+					outsideContent.Reset()
+					insideContent.Reset()
+				} else {
+					if strings.HasPrefix(outsideString, " ") && strings.HasSuffix(outsideString, " ") {
+						if insideString != "" {
+							content = append(content, insideString)
+						}
+						content = append(content, strings.Fields(outsideString)...)
+						outsideContent.Reset()
+						insideContent.Reset()
+					} else if strings.HasPrefix(outsideString, " ") {
+						if insideString != "" {
+							content = append(content, insideString)
+						}
+						fields := strings.Fields(outsideString)
+						content = append(content, fields[0:len(fields)-1]...)
+						insideContent.WriteString(fields[0])
+						outsideContent.Reset()
+					} else if strings.HasSuffix(outsideString, " ") {
+						fields := strings.Fields(outsideString)
+						insideContent.WriteString(fields[0])
+						content = append(content, insideContent.String())
+						if len(fields) >= 1 {
+							content = append(content, fields[1:len(fields)]...)
+						}
+						insideContent.Reset()
+						outsideContent.Reset()
+					} else {
+						insideContent.WriteString(outsideString)
+						outsideContent.Reset()
 					}
-				} else if outsideString != "" {
-					content.WriteRune(' ')
 				}
-				outsideContent.Reset()
 			}
 		} else {
 			if inQuote {
-				content.WriteRune(r)
+				insideContent.WriteRune(r)
 			} else {
 				outsideContent.WriteRune(r)
 			}
@@ -48,12 +74,28 @@ func ParseQuotes(args string) (string, error) {
 	}
 
 	if counter%2 != 0 {
-		return "", errors.New("Bad argument: unbalanced quotes")
+		return []string{}, errors.New("Bad argument: unbalanced quotes")
 	}
+
+	outsideString := outsideContent.String()
+	insideString := insideContent.String()
 
 	if !inQuote {
-		content.WriteString(strings.Join(strings.Fields(outsideContent.String()), " "))
+		if strings.HasPrefix(outsideString, " ") {
+			if insideString != "" {
+				content = append(content, insideString)
+			}
+			fields := strings.Fields(outsideString)
+			content = append(content, fields...)
+		} else {
+			fields := strings.Fields(outsideString)
+			insideContent.WriteString(fields[0])
+			content = append(content, insideContent.String())
+			if len(fields) >= 1 {
+				content = append(content, fields[1:len(fields)]...)
+			}
+		}
 	}
 
-	return content.String(), nil
+	return content, nil
 }

@@ -37,16 +37,17 @@ func main() {
 		command = strings.TrimRight(command, "\r\n")
 		//command = strings.TrimSpace(command)
 		command, args := split(command)
+		tokens, err := tokenizer(args)
+
+		if err != nil {
+			fmt.Printf("Error: %v\n", err)
+		}
 
 		switch command {
 		case "exit":
 			os.Exit(0)
 		case "echo":
-			args, err = ParseQuotes(args)
-			if err != nil {
-				fmt.Printf("Error: %v\n", err)
-			}
-			echoCommand(args)
+			echoCommand(tokens)
 		case "type":
 			typeCommand(args)
 		case "pwd":
@@ -54,7 +55,7 @@ func main() {
 		case "cd":
 			cmd.cdCommand(args)
 		default:
-			cmd := exec.Command(command, args)
+			cmd := exec.Command(command, tokens...)
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 			if err := cmd.Run(); err != nil {
