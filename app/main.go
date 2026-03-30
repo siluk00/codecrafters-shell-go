@@ -37,6 +37,10 @@ func main() {
 		command = strings.TrimRight(command, "\r\n")
 		//command = strings.TrimSpace(command)
 		command, args := split(command)
+		args, err = ParseQuotes(args)
+		if err != nil {
+			fmt.Printf("Error: %v\n", err)
+		}
 
 		switch command {
 		case "exit":

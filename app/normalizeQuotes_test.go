@@ -24,7 +24,7 @@ func TestNormalizeQuotes(t *testing.T) {
 	}
 
 	for i, _ := range strTest {
-		acquired, _ := NormalizeQuotes(strTest[i])
+		acquired, _ := ParseQuotes(strTest[i])
 		assert.Equal(t, expected[i], acquired)
 	}
 }
