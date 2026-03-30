@@ -54,7 +54,7 @@ func main() {
 		case "cd":
 			cmd.cdCommand(args)
 		default:
-			cmd := exec.Command(command, strings.Fields(args)...)
+			cmd := exec.Command(command, args)
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 			if err := cmd.Run(); err != nil {
