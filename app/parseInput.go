@@ -79,6 +79,7 @@ func tokenizer(args string) ([]string, error) {
 
 	outsideString := outsideContent.String()
 	insideString := insideContent.String()
+	//fmt.Printf("inside: %s\n", insideString)
 
 	if !inQuote {
 		if strings.HasPrefix(outsideString, " ") {
@@ -94,10 +95,13 @@ func tokenizer(args string) ([]string, error) {
 			if len(fields) >= 1 {
 				content = append(content, fields[1:len(fields)]...)
 			}
+		} else {
+			if insideString != "" {
+				content = append(content, insideString)
+			}
 		}
-	} else {
-		content = append(content, insideString)
 	}
+	//fmt.Printf("content: %s\n", strings.Join(content, " "))
 
 	return content, nil
 }
