@@ -18,7 +18,6 @@ func echoCommand(args string) {
 func NormalizeQuotes(args string) (string, error) {
 	content := strings.Builder{}
 	inQuote := false
-	flipped := false
 	outsideContent := strings.Builder{}
 	counter := 0
 	args = strings.TrimLeft(args, " ")
@@ -30,34 +29,29 @@ func NormalizeQuotes(args string) (string, error) {
 
 			if inQuote {
 				inQuote = false
-				flipped = true
 			} else {
 				inQuote = true
-				flipped = true
+
+				outsideString := outsideContent.String()
+
+				if strings.TrimSpace(outsideString) != "" {
+					if strings.HasPrefix(outsideString, " ") {
+						content.WriteRune(' ')
+					}
+					content.WriteString(strings.Join(strings.Fields(outsideString), " "))
+					if strings.HasSuffix(outsideString, " ") {
+						content.WriteRune(' ')
+					}
+				} else if outsideString != "" {
+					content.WriteRune(' ')
+				}
+				outsideContent.Reset()
 			}
 		} else {
 			if inQuote {
-				if flipped {
-					outsideString := outsideContent.String()
-
-					if strings.TrimSpace(outsideString) != "" {
-						if strings.HasPrefix(outsideString, " ") {
-							content.WriteRune(' ')
-						}
-						content.WriteString(strings.Join(strings.Fields(outsideString), " "))
-						if strings.HasSuffix(outsideString, " ") {
-							content.WriteRune(' ')
-						}
-					} else if outsideString != "" {
-						content.WriteRune(' ')
-					}
-					outsideContent.Reset()
-					flipped = false
-				}
 				content.WriteRune(r)
 			} else {
 				outsideContent.WriteRune(r)
-				flipped = false
 			}
 		}
 	}

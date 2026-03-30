@@ -20,7 +20,6 @@ type Cmd struct {
 }
 
 func main() {
-	// TODO: Uncomment the code below to pass the first stage
 	curDir, err := os.Getwd()
 	if err != nil {
 		log.Fatalln("Couldn't find current directory")
