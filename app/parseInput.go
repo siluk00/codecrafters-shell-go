@@ -87,7 +87,7 @@ func tokenizer(args string) ([]string, error) {
 			}
 			fields := strings.Fields(outsideString)
 			content = append(content, fields...)
-		} else {
+		} else if strings.Trim(outsideString, " ") != "" {
 			fields := strings.Fields(outsideString)
 			insideContent.WriteString(fields[0])
 			content = append(content, insideContent.String())
