@@ -44,6 +44,7 @@ func tokenizer(args string) ([]string, error) {
 					} else if strings.HasPrefix(outsideString, " ") {
 						if insideString != "" {
 							content = append(content, insideString)
+							insideContent.Reset()
 						}
 						fields := strings.Fields(outsideString)
 						content = append(content, fields[0:len(fields)-1]...)
