@@ -95,6 +95,8 @@ func tokenizer(args string) ([]string, error) {
 				content = append(content, fields[1:len(fields)]...)
 			}
 		}
+	} else {
+		content = append(content, insideString)
 	}
 
 	return content, nil
